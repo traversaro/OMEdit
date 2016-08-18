@@ -96,6 +96,7 @@ private:
   bool mRenderingLibraryPixmap;
   QList<Component*> mComponentsList;
   QList<LineAnnotation*> mConnectionsList;
+  QList<LineAnnotation*> mTransitionsList;
   QList<ShapeAnnotation*> mShapesList;
   QList<Component*> mInheritedComponentsList;
   QList<LineAnnotation*> mInheritedConnectionsList;
@@ -193,6 +194,8 @@ public:
   void addInheritedConnectionToList(LineAnnotation *pConnectionLineAnnotation) {mInheritedConnectionsList.append(pConnectionLineAnnotation);}
   void deleteConnectionFromList(LineAnnotation *pConnectionLineAnnotation) {mConnectionsList.removeOne(pConnectionLineAnnotation);}
   void deleteInheritedConnectionFromList(LineAnnotation *pConnectionLineAnnotation) {mInheritedConnectionsList.removeOne(pConnectionLineAnnotation);}
+  void addTransitionToClass(LineAnnotation *pTransitionLineAnnotation);
+  void addTransitionToList(LineAnnotation *pTransitionLineAnnotation) {mTransitionsList.append(pTransitionLineAnnotation);}
   void addShapeToList(ShapeAnnotation *pShape) {mShapesList.append(pShape);}
   void addInheritedShapeToList(ShapeAnnotation *pShape) {mInheritedShapesList.append(pShape);}
   void deleteShape(ShapeAnnotation *pShapeAnnotation);

@@ -579,6 +579,23 @@ void GraphicsView::updateConnectionInClass(LineAnnotation *pConnectionLineAnnota
 }
 
 /*!
+ * \brief GraphicsView::addTransitionToClass
+ * Adds the transition to class.
+ * \param pTransitionLineAnnotation - the transition to add.
+ */
+void GraphicsView::addTransitionToClass(LineAnnotation *pTransitionLineAnnotation)
+{
+  MainWindow *pMainWindow = mpModelWidget->getModelWidgetContainer()->getMainWindow();
+  if (pMainWindow->getOMCProxy()->addTransition(mpModelWidget->getLibraryTreeItem()->getNameStructure(),
+                                                pTransitionLineAnnotation->getStartComponentName(),
+                                                pTransitionLineAnnotation->getEndComponentName(), pTransitionLineAnnotation->getCondition(),
+                                                pTransitionLineAnnotation->getImmediate(), pTransitionLineAnnotation->getReset(),
+                                                pTransitionLineAnnotation->getSynchronize(), pTransitionLineAnnotation->getPriority(),
+                                                QString("annotate=").append(pTransitionLineAnnotation->getShapeAnnotation()))) {
+  }
+}
+
+/*!
  * \brief GraphicsView::deleteShape
  * Deletes the shape from the icon/diagram layer.
  * \param pShapeAnnotation
@@ -3803,12 +3820,12 @@ void ModelWidget::getModelTransitions()
         textShape = StringHandler::removeFirstLastBrackets(textShape);
       }
     }
-    LineAnnotation *pConnectionLineAnnotation;
-    pConnectionLineAnnotation = new LineAnnotation(lineShape, textShape, pStartComponent, pEndComponent, transition.at(2), transition.at(3),
+    LineAnnotation *pTransitionLineAnnotation;
+    pTransitionLineAnnotation = new LineAnnotation(lineShape, textShape, pStartComponent, pEndComponent, transition.at(2), transition.at(3),
                                                    transition.at(4), transition.at(5), transition.at(6), mpDiagramGraphicsView);
-    pConnectionLineAnnotation->setStartComponentName(transition.at(0));
-    pConnectionLineAnnotation->setEndComponentName(transition.at(1));
-    mpUndoStack->push(new AddConnectionCommand(pConnectionLineAnnotation, false));
+    pTransitionLineAnnotation->setStartComponentName(transition.at(0));
+    pTransitionLineAnnotation->setEndComponentName(transition.at(1));
+    mpUndoStack->push(new AddTransitionCommand(pTransitionLineAnnotation, false));
   }
 }
 

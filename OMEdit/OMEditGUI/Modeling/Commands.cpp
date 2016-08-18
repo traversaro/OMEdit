@@ -959,8 +959,14 @@ AddTransitionCommand::AddTransitionCommand(LineAnnotation *pTransitionLineAnnota
   setText(QString("Add Transition transition(%1, %2)").arg(mpTransitionLineAnnotation->getStartComponentName(),
                                                            mpTransitionLineAnnotation->getEndComponentName()));
 
-  mpTransitionLineAnnotation->setToolTip(QString("<b>connect</b>(%1, %2)").arg(mpTransitionLineAnnotation->getStartComponentName())
-                                         .arg(mpTransitionLineAnnotation->getEndComponentName()));
+  mpTransitionLineAnnotation->setToolTip(QString("<b>transition</b>(%1, %2, %3, %4, %5, %6, %7)")
+                                         .arg(mpTransitionLineAnnotation->getStartComponentName())
+                                         .arg(mpTransitionLineAnnotation->getEndComponentName())
+                                         .arg(mpTransitionLineAnnotation->getCondition())
+                                         .arg(mpTransitionLineAnnotation->getImmediate() ? "true" : "false")
+                                         .arg(mpTransitionLineAnnotation->getReset() ? "true" : "false")
+                                         .arg(mpTransitionLineAnnotation->getSynchronize() ? "true" : "false")
+                                         .arg(mpTransitionLineAnnotation->getPriority()));
   mpTransitionLineAnnotation->drawCornerItems();
   mpTransitionLineAnnotation->setCornerItemsActiveOrPassive();
 }
@@ -971,25 +977,25 @@ AddTransitionCommand::AddTransitionCommand(LineAnnotation *pTransitionLineAnnota
  */
 void AddTransitionCommand::redo()
 {
-  // Add the start component connection details.
-  Component *pStartComponent = mpTransitionLineAnnotation->getStartComponent();
-  if (pStartComponent->getRootParentComponent()) {
-    pStartComponent->getRootParentComponent()->addConnectionDetails(mpTransitionLineAnnotation);
-  } else {
-    pStartComponent->addConnectionDetails(mpTransitionLineAnnotation);
-  }
-  // Add the end component connection details.
-  Component *pEndComponent = mpTransitionLineAnnotation->getEndComponent();
-  if (pEndComponent->getRootParentComponent()) {
-    pEndComponent->getRootParentComponent()->addConnectionDetails(mpTransitionLineAnnotation);
-  } else {
-    pEndComponent->addConnectionDetails(mpTransitionLineAnnotation);
-  }
-  mpTransitionLineAnnotation->getGraphicsView()->addConnectionToList(mpTransitionLineAnnotation);
+//  // Add the start component connection details.
+//  Component *pStartComponent = mpTransitionLineAnnotation->getStartComponent();
+//  if (pStartComponent->getRootParentComponent()) {
+//    pStartComponent->getRootParentComponent()->addConnectionDetails(mpTransitionLineAnnotation);
+//  } else {
+//    pStartComponent->addConnectionDetails(mpTransitionLineAnnotation);
+//  }
+//  // Add the end component connection details.
+//  Component *pEndComponent = mpTransitionLineAnnotation->getEndComponent();
+//  if (pEndComponent->getRootParentComponent()) {
+//    pEndComponent->getRootParentComponent()->addConnectionDetails(mpTransitionLineAnnotation);
+//  } else {
+//    pEndComponent->addConnectionDetails(mpTransitionLineAnnotation);
+//  }
+  mpTransitionLineAnnotation->getGraphicsView()->addTransitionToList(mpTransitionLineAnnotation);
   mpTransitionLineAnnotation->getGraphicsView()->addItem(mpTransitionLineAnnotation);
   mpTransitionLineAnnotation->emitAdded();
   if (mAddTransition) {
-    mpTransitionLineAnnotation->getGraphicsView()->addConnectionToClass(mpTransitionLineAnnotation);
+    mpTransitionLineAnnotation->getGraphicsView()->addTransitionToClass(mpTransitionLineAnnotation);
   }
 }
 

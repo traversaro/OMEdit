@@ -1882,6 +1882,33 @@ bool OMCProxy::deleteConnection(QString from, QString to, QString className)
 }
 
 /*!
+ * \brief OMCProxy::addTransition
+ * Adds a transition
+ * \param className - the name of the class.
+ * \param from - the connection start component name.
+ * \param to - the connection end component name.
+ * \param immediate
+ * \param reset
+ * \param synchronize
+ * \param priority
+ * \param annotation
+ * \return true on success.
+ */
+bool OMCProxy::addTransition(QString className, QString from, QString to, QString condition, bool immediate, bool reset, bool synchronize,
+                             int priority, QString annotation)
+{
+  sendCommand(QString("addTransition(%1, \"%2\", \"%3\", \"%4\", %5, %6, %7, %8, %9)").arg(className).arg(from).arg(to)
+              .arg(StringHandler::escapeString(condition)).arg(immediate ? "true" : "false").arg(reset ? "true" : "false")
+              .arg(synchronize ? "true" : "false").arg(priority).arg(annotation));
+  if (StringHandler::unparseBool(getResult())) {
+    return true;
+  } else {
+    printMessagesStringInternal();
+    return false;
+  }
+}
+
+/*!
  * \brief OMCProxy::simulate
  * Simulate the model. Creates an execuatble and runs it.
  * \param className - the name of the class.

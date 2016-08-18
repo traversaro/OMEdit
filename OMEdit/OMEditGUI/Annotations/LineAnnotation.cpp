@@ -1790,15 +1790,18 @@ CreateTransitionDialog::CreateTransitionDialog(GraphicsView *pGraphicsView, Line
   mpConditionTextBox = new QLineEdit;
   // immediate
   mpImmediateCheckBox = new QCheckBox(Helper::immediate);
-  mpImmediateCheckBox->setChecked(true);
+  mpImmediateCheckBox->setChecked(mpTransitionLineAnnotation->getImmediate());
   // reset
   mpResetCheckBox = new QCheckBox(Helper::reset);
-  mpResetCheckBox->setChecked(true);
+  mpResetCheckBox->setChecked(mpTransitionLineAnnotation->getReset());
   // synchronize
   mpSynchronizeCheckBox = new QCheckBox(Helper::synchronize);
+  mpSynchronizeCheckBox->setChecked(mpTransitionLineAnnotation->getSynchronize());
   // priority
   mpPriorityLabel = new Label(Helper::priority);
   mpPrioritySpinBox = new QSpinBox;
+  mpPrioritySpinBox->setMinimum(1);
+  mpPrioritySpinBox->setValue(mpTransitionLineAnnotation->getPriority());
   // Create the buttons
   mpOkButton = new QPushButton(Helper::ok);
   mpOkButton->setAutoDefault(true);
@@ -1836,8 +1839,19 @@ CreateTransitionDialog::CreateTransitionDialog(GraphicsView *pGraphicsView, Line
  */
 void CreateTransitionDialog::createTransition()
 {
-//  mpGraphicsView->getModelWidget()->getUndoStack()->push(new AddConnectionCommand(mpTransitionLineAnnotation, true));
-//  mpGraphicsView->getModelWidget()->getLibraryTreeItem()->emitConnectionAdded(mpTransitionLineAnnotation);
-//  mpGraphicsView->getModelWidget()->updateModelText();
+  if (mpConditionTextBox->text().isEmpty()) {
+    QMessageBox::critical(mpGraphicsView, QString(Helper::applicationName).append(" - ").append(Helper::error),
+                          GUIMessages::getMessage(GUIMessages::INVALID_TRANSITION_CONDITION), Helper::ok);
+    mpConditionTextBox->setFocus(Qt::ActiveWindowFocusReason);
+    return;
+  }
+  mpTransitionLineAnnotation->setCondition(mpConditionTextBox->text());
+  mpTransitionLineAnnotation->setImmediate(mpImmediateCheckBox->isChecked());
+  mpTransitionLineAnnotation->setReset(mpResetCheckBox->isChecked());
+  mpTransitionLineAnnotation->setSynchronize(mpSynchronizeCheckBox->isChecked());
+  mpTransitionLineAnnotation->setPriority(mpPrioritySpinBox->value());
+  mpGraphicsView->getModelWidget()->getUndoStack()->push(new AddTransitionCommand(mpTransitionLineAnnotation, true));
+  //mpGraphicsView->getModelWidget()->getLibraryTreeItem()->emitConnectionAdded(mpTransitionLineAnnotation);
+  mpGraphicsView->getModelWidget()->updateModelText();
   accept();
 }

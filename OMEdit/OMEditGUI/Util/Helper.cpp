@@ -657,6 +657,8 @@ QString GUIMessages::getMessage(int type)
           .arg(Helper::saveExperimentAnnotation)
           .arg(Helper::saveOpenModelicaSimulationFlagsAnnotation)
           .arg(Helper::simulate);
+    case INVALID_TRANSITION_CONDITION:
+      return tr("Please enter a valid condition e.g., x >=0.");
     default:
       return "";
   }
