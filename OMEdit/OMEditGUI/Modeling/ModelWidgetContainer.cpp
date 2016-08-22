@@ -546,8 +546,8 @@ void GraphicsView::addConnectionToClass(LineAnnotation *pConnectionLineAnnotatio
 }
 
 /*!
- * \brief GraphicsView::deleteConnectionFromOMC
- * Deletes the connection from OMC.
+ * \brief GraphicsView::deleteConnectionFromClass
+ * Deletes the connection from class.
  * \param pConnectionLineAnnotation - the connection to delete.
  */
 void GraphicsView::deleteConnectionFromClass(LineAnnotation *pConnectionLineAnnotation)
@@ -593,6 +593,21 @@ void GraphicsView::addTransitionToClass(LineAnnotation *pTransitionLineAnnotatio
                                                 pTransitionLineAnnotation->getSynchronize(), pTransitionLineAnnotation->getPriority(),
                                                 QString("annotate=").append(pTransitionLineAnnotation->getShapeAnnotation()))) {
   }
+}
+
+/*!
+ * \brief GraphicsView::deleteTransitionFromClass
+ * Deletes the connection from class.
+ * \param pTransitionLineAnnotation - the transition to delete.
+ */
+void GraphicsView::deleteTransitionFromClass(LineAnnotation *pTransitionLineAnnotation)
+{
+  MainWindow *pMainWindow = mpModelWidget->getModelWidgetContainer()->getMainWindow();
+  pMainWindow->getOMCProxy()->deleteTransition(mpModelWidget->getLibraryTreeItem()->getNameStructure(),
+                                               pTransitionLineAnnotation->getStartComponentName(),
+                                               pTransitionLineAnnotation->getEndComponentName(), pTransitionLineAnnotation->getCondition(),
+                                               pTransitionLineAnnotation->getImmediate(), pTransitionLineAnnotation->getReset(),
+                                               pTransitionLineAnnotation->getSynchronize(), pTransitionLineAnnotation->getPriority());
 }
 
 /*!

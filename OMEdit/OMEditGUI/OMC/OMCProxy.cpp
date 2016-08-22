@@ -1909,6 +1909,28 @@ bool OMCProxy::addTransition(QString className, QString from, QString to, QStrin
 }
 
 /*!
+ * \brief OMCProxy::deleteTransition
+ * Deletes a transition
+ * \param className - the name of the class.
+ * \param from - the connection start component name.
+ * \param to - the connection end component name.
+ * \param immediate
+ * \param reset
+ * \param synchronize
+ * \param priority
+ * \return true on success.
+ */
+bool OMCProxy::deleteTransition(QString className, QString from, QString to, QString condition, bool immediate, bool reset, bool synchronize,
+                                int priority)
+{
+  bool result = mpOMCInterface->deleteTransition(className, from, to, condition, immediate, reset, synchronize, priority);
+  if (!result) {
+    printMessagesStringInternal();
+  }
+  return result;
+}
+
+/*!
  * \brief OMCProxy::simulate
  * Simulate the model. Creates an execuatble and runs it.
  * \param className - the name of the class.

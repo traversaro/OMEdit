@@ -186,6 +186,8 @@ public:
   bool deleteConnection(QString from, QString to, QString className);
   bool addTransition(QString className, QString from, QString to, QString condition, bool immediate, bool reset, bool synchronize,
                      int priority, QString annotation);
+  bool deleteTransition(QString className, QString from, QString to, QString condition, bool immediate, bool reset, bool synchronize,
+                        int priority);
   bool simulate(QString className, QString simualtionParameters);
   bool buildModel(QString className, QString simualtionParameters);
   bool translateModel(QString className, QString simualtionParameters);

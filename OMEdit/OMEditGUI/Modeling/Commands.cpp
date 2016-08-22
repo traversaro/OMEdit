@@ -1005,24 +1005,24 @@ void AddTransitionCommand::redo()
  */
 void AddTransitionCommand::undo()
 {
-  // Remove the start component connection details.
-  Component *pStartComponent = mpTransitionLineAnnotation->getStartComponent();
-  if (pStartComponent->getRootParentComponent()) {
-    pStartComponent->getRootParentComponent()->removeConnectionDetails(mpTransitionLineAnnotation);
-  } else {
-    pStartComponent->removeConnectionDetails(mpTransitionLineAnnotation);
-  }
-  // Remove the end component connection details.
-  Component *pEndComponent = mpTransitionLineAnnotation->getEndComponent();
-  if (pEndComponent->getRootParentComponent()) {
-    pEndComponent->getRootParentComponent()->removeConnectionDetails(mpTransitionLineAnnotation);
-  } else {
-    pEndComponent->removeConnectionDetails(mpTransitionLineAnnotation);
-  }
-  mpTransitionLineAnnotation->getGraphicsView()->deleteConnectionFromList(mpTransitionLineAnnotation);
+//  // Remove the start component connection details.
+//  Component *pStartComponent = mpTransitionLineAnnotation->getStartComponent();
+//  if (pStartComponent->getRootParentComponent()) {
+//    pStartComponent->getRootParentComponent()->removeConnectionDetails(mpTransitionLineAnnotation);
+//  } else {
+//    pStartComponent->removeConnectionDetails(mpTransitionLineAnnotation);
+//  }
+//  // Remove the end component connection details.
+//  Component *pEndComponent = mpTransitionLineAnnotation->getEndComponent();
+//  if (pEndComponent->getRootParentComponent()) {
+//    pEndComponent->getRootParentComponent()->removeConnectionDetails(mpTransitionLineAnnotation);
+//  } else {
+//    pEndComponent->removeConnectionDetails(mpTransitionLineAnnotation);
+//  }
+  mpTransitionLineAnnotation->getGraphicsView()->deleteTransitionFromList(mpTransitionLineAnnotation);
   mpTransitionLineAnnotation->getGraphicsView()->removeItem(mpTransitionLineAnnotation);
   mpTransitionLineAnnotation->emitDeleted();
-  mpTransitionLineAnnotation->getGraphicsView()->deleteConnectionFromClass(mpTransitionLineAnnotation);
+  mpTransitionLineAnnotation->getGraphicsView()->deleteTransitionFromClass(mpTransitionLineAnnotation);
 }
 
 UpdateCoOrdinateSystemCommand::UpdateCoOrdinateSystemCommand(GraphicsView *pGraphicsView, CoOrdinateSystem oldCoOrdinateSystem,
