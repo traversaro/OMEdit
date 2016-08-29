@@ -1025,6 +1025,89 @@ void AddTransitionCommand::undo()
   mpTransitionLineAnnotation->getGraphicsView()->deleteTransitionFromClass(mpTransitionLineAnnotation);
 }
 
+UpdateTransitionCommand::UpdateTransitionCommand(LineAnnotation *pTransitionLineAnnotation, QString oldCondition, bool oldImmediate,
+                                                 bool oldReset, bool oldSynchronize, int oldPriority, QString oldAnnotaton,
+                                                 QString newCondition, bool newImmediate, bool newReset, bool newSynchronize, int newPriority,
+                                                 QString newAnnotation, QUndoCommand *pParent)
+  : QUndoCommand(pParent)
+{
+  mpTransitionLineAnnotation = pTransitionLineAnnotation;
+  mOldCondition = oldCondition;
+  mOldImmediate = oldImmediate;
+  mOldReset = oldReset;
+  mOldSynchronize = oldSynchronize;
+  mOldPriority = oldPriority;
+  mOldAnnotation = oldAnnotaton;
+  mNewCondition = newCondition;
+  mNewImmediate = newImmediate;
+  mNewReset = newReset;
+  mNewSynchronize = newSynchronize;
+  mNewPriority = newPriority;
+  mNewAnnotation = newAnnotation;
+  setText(QString("Update Transition transition(%1, %2)").arg(mpTransitionLineAnnotation->getStartComponentName(),
+                                                              mpTransitionLineAnnotation->getEndComponentName()));
+}
+
+/*!
+ * \brief UpdateTransitionCommand::redo
+ * Redo the UpdateTransitionCommand.
+ */
+void UpdateTransitionCommand::redo()
+{
+  mpTransitionLineAnnotation->parseShapeAnnotation(mNewAnnotation);
+  mpTransitionLineAnnotation->initializeTransformation();
+  mpTransitionLineAnnotation->removeCornerItems();
+  mpTransitionLineAnnotation->drawCornerItems();
+  mpTransitionLineAnnotation->adjustGeometries();
+  mpTransitionLineAnnotation->setCornerItemsActiveOrPassive();
+  mpTransitionLineAnnotation->update();
+  mpTransitionLineAnnotation->emitChanged();
+  mpTransitionLineAnnotation->setCondition(mNewCondition);
+  mpTransitionLineAnnotation->setImmediate(mNewImmediate);
+  mpTransitionLineAnnotation->setReset(mNewReset);
+  mpTransitionLineAnnotation->setSynchronize(mNewSynchronize);
+  mpTransitionLineAnnotation->setPriority(mNewPriority);
+  mpTransitionLineAnnotation->updateTransitionAnnotation(mOldCondition, mOldImmediate, mOldReset, mOldSynchronize, mOldPriority);
+  mpTransitionLineAnnotation->setToolTip(QString("<b>transition</b>(%1, %2, %3, %4, %5, %6, %7)")
+                                         .arg(mpTransitionLineAnnotation->getStartComponentName())
+                                         .arg(mpTransitionLineAnnotation->getEndComponentName())
+                                         .arg(mpTransitionLineAnnotation->getCondition())
+                                         .arg(mpTransitionLineAnnotation->getImmediate() ? "true" : "false")
+                                         .arg(mpTransitionLineAnnotation->getReset() ? "true" : "false")
+                                         .arg(mpTransitionLineAnnotation->getSynchronize() ? "true" : "false")
+                                         .arg(mpTransitionLineAnnotation->getPriority()));
+}
+
+/*!
+ * \brief UpdateTransitionCommand::undo
+ * Undo the UpdateTransitionCommand.
+ */
+void UpdateTransitionCommand::undo()
+{
+  mpTransitionLineAnnotation->parseShapeAnnotation(mOldAnnotation);
+  mpTransitionLineAnnotation->initializeTransformation();
+  mpTransitionLineAnnotation->removeCornerItems();
+  mpTransitionLineAnnotation->drawCornerItems();
+  mpTransitionLineAnnotation->adjustGeometries();
+  mpTransitionLineAnnotation->setCornerItemsActiveOrPassive();
+  mpTransitionLineAnnotation->update();
+  mpTransitionLineAnnotation->emitChanged();
+  mpTransitionLineAnnotation->setCondition(mOldCondition);
+  mpTransitionLineAnnotation->setImmediate(mOldImmediate);
+  mpTransitionLineAnnotation->setReset(mOldReset);
+  mpTransitionLineAnnotation->setSynchronize(mOldSynchronize);
+  mpTransitionLineAnnotation->setPriority(mOldPriority);
+  mpTransitionLineAnnotation->updateTransitionAnnotation(mNewCondition, mNewImmediate, mNewReset, mNewSynchronize, mNewPriority);
+  mpTransitionLineAnnotation->setToolTip(QString("<b>transition</b>(%1, %2, %3, %4, %5, %6, %7)")
+                                         .arg(mpTransitionLineAnnotation->getStartComponentName())
+                                         .arg(mpTransitionLineAnnotation->getEndComponentName())
+                                         .arg(mpTransitionLineAnnotation->getCondition())
+                                         .arg(mpTransitionLineAnnotation->getImmediate() ? "true" : "false")
+                                         .arg(mpTransitionLineAnnotation->getReset() ? "true" : "false")
+                                         .arg(mpTransitionLineAnnotation->getSynchronize() ? "true" : "false")
+                                         .arg(mpTransitionLineAnnotation->getPriority()));
+}
+
 UpdateCoOrdinateSystemCommand::UpdateCoOrdinateSystemCommand(GraphicsView *pGraphicsView, CoOrdinateSystem oldCoOrdinateSystem,
                                                              CoOrdinateSystem newCoOrdinateSystem, bool copyProperties, QString oldVersion,
                                                              QString newVersion, QString oldUsesAnnotationString,

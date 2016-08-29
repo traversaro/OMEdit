@@ -188,6 +188,9 @@ public:
                      int priority, QString annotation);
   bool deleteTransition(QString className, QString from, QString to, QString condition, bool immediate, bool reset, bool synchronize,
                         int priority);
+  bool updateTransition(QString className, QString from, QString to, QString oldCondition, bool oldImmediate, bool oldReset,
+                        bool oldSynchronize, int oldPriority, QString condition, bool immediate, bool reset, bool synchronize, int priority,
+                        QString annotation);
   bool simulate(QString className, QString simualtionParameters);
   bool buildModel(QString className, QString simualtionParameters);
   bool translateModel(QString className, QString simualtionParameters);

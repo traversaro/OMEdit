@@ -205,6 +205,30 @@ private:
   bool mAddTransition;
 };
 
+class UpdateTransitionCommand : public QUndoCommand
+{
+public:
+  UpdateTransitionCommand(LineAnnotation *pTransitionLineAnnotation, QString oldCondition, bool oldImmediate, bool oldReset,
+                          bool oldSynchronize, int oldPriority, QString oldAnnotaton, QString newCondition, bool newImmediate, bool newReset,
+                          bool newSynchronize, int newPriority, QString newAnnotation, QUndoCommand *pParent = 0);
+  void redo();
+  void undo();
+private:
+  LineAnnotation *mpTransitionLineAnnotation;
+  QString mOldCondition;
+  bool mOldImmediate;
+  bool mOldReset;
+  bool mOldSynchronize;
+  int mOldPriority;
+  QString mOldAnnotation;
+  QString mNewCondition;
+  bool mNewImmediate;
+  bool mNewReset;
+  bool mNewSynchronize;
+  int mNewPriority;
+  QString mNewAnnotation;
+};
+
 class UpdateCoOrdinateSystemCommand : public QUndoCommand
 {
 public:

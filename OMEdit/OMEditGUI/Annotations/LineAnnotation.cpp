@@ -983,6 +983,21 @@ void LineAnnotation::updateConnectionAnnotation()
 }
 
 /*!
+ * \brief LineAnnotation::updateTransitionAnnotation
+ * Updates the transition annotation.
+ */
+void LineAnnotation::updateTransitionAnnotation(QString oldCondition, bool oldImmediate, bool oldReset, bool oldSynchronize, int oldPriority)
+{
+  // get the transition line and text annotation.
+  QString annotationString = QString("annotate=").append(getShapeAnnotation());
+  // update the connection
+  OMCProxy *pOMCProxy = mpGraphicsView->getModelWidget()->getModelWidgetContainer()->getMainWindow()->getOMCProxy();
+  pOMCProxy->updateTransition(mpGraphicsView->getModelWidget()->getLibraryTreeItem()->getNameStructure(), getStartComponentName(),
+                              getEndComponentName(), oldCondition, oldImmediate, oldReset, oldSynchronize, oldPriority, getCondition(),
+                              getImmediate(), getReset(), getSynchronize(), getPriority(), annotationString);
+}
+
+/*!
  * \brief LineAnnotation::duplicate
  * Duplicates the shape.
  */

@@ -1887,6 +1887,7 @@ bool OMCProxy::deleteConnection(QString from, QString to, QString className)
  * \param className - the name of the class.
  * \param from - the connection start component name.
  * \param to - the connection end component name.
+ * \param condition
  * \param immediate
  * \param reset
  * \param synchronize
@@ -1928,6 +1929,42 @@ bool OMCProxy::deleteTransition(QString className, QString from, QString to, QSt
     printMessagesStringInternal();
   }
   return result;
+}
+
+/*!
+ * \brief OMCProxy::updateTransition
+ * Updates a transition
+ * \param className - the name of the class.
+ * \param from - the connection start component name.
+ * \param to - the connection end component name.
+ * \param oldCondition
+ * \param oldImmediate
+ * \param oldReset
+ * \param oldSynchronize
+ * \param oldPriority
+ * \param condition
+ * \param immediate
+ * \param reset
+ * \param synchronize
+ * \param priority
+ * \param annotation
+ * \return true on success.
+ */
+bool OMCProxy::updateTransition(QString className, QString from, QString to, QString oldCondition, bool oldImmediate, bool oldReset,
+                                bool oldSynchronize, int oldPriority, QString condition, bool immediate, bool reset, bool synchronize,
+                                int priority, QString annotation)
+{
+  sendCommand(QString("updateTransition(%1, \"%2\", \"%3\", \"%4\", %5, %6, %7, %8, \"%9\", %10, %11, %12, %13, %14)").arg(className).arg(from)
+              .arg(to).arg(StringHandler::escapeString(oldCondition)).arg(oldImmediate ? "true" : "false").arg(oldReset ? "true" : "false")
+              .arg(oldSynchronize ? "true" : "false").arg(oldPriority).arg(StringHandler::escapeString(condition))
+              .arg(immediate ? "true" : "false").arg(reset ? "true" : "false").arg(synchronize ? "true" : "false")
+              .arg(priority).arg(annotation));
+  if (StringHandler::unparseBool(getResult())) {
+    return true;
+  } else {
+    printMessagesStringInternal();
+    return false;
+  }
 }
 
 /*!

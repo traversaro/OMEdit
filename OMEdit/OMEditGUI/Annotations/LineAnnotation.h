@@ -137,6 +137,7 @@ private:
 public slots:
   void handleComponentMoved();
   void updateConnectionAnnotation();
+  void updateTransitionAnnotation(QString oldCondition, bool oldImmediate, bool oldReset, bool oldSynchronize, int oldPriority);
   void duplicate();
 };
 

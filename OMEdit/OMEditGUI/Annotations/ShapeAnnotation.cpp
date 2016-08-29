@@ -952,6 +952,9 @@ void ShapeAnnotation::updateShape(ShapeAnnotation *pShapeAnnotation)
  */
 void ShapeAnnotation::manhattanizeShape(bool addToStack)
 {
+  if (mSmooth == StringHandler::SmoothBezier) {
+    return;
+  }
   QString oldAnnotation = getOMCShapeAnnotation();
   int startIndex = -1;
   for (int i = 0 ; i < mPoints.size() ; i++) {
